@@ -5,19 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sakura Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .equals {
+            grid-column: span 2;
+            width: 100%;
+            font-size: 20px;
+            padding: 14px 0;
+        }
+        .extra-funcs, .scientific-funcs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .btn.func.small {
+            font-size: 16px;
+            padding: 8px 0;
+            min-width: 48px;
+            flex: 1 1 48px;
+            margin: 2px;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fdf4f9 0%, #ffe6f3 40%, #ffd6ee 80%, #ffcae8 100%);
+        }
+        .calculator {
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(255, 133, 162, .18);
+            max-width: 260px;
+            padding: 16px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .btn {
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 18px;
+            padding: 10px 0;
+        }
+        .calculator-header h1 {
+            font-size: 22px;
+        }
+        details[open] .extra-funcs, details[open] .scientific-funcs {
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Falling sakura petals -->
-    <div class="sakura-container">
-        <!-- 15 petals -->
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    </div>
-
     <!-- Calculator -->
     <div class="calculator">
 
