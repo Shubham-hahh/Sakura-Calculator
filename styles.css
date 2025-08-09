@@ -1,0 +1,179 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Sakura Animation */
+.sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.petal {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: radial-gradient(circle, #ffb7c5 0%, #ff85a2 100%);
+    border-radius: 150% 0 150% 0;
+    animation: falling linear infinite;
+    opacity: 0.8;
+}
+
+.petal:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: 0s; }
+.petal:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: 2s; }
+.petal:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: 4s; }
+.petal:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: 1s; }
+.petal:nth-child(5) { left: 50%; animation-duration: 16s; animation-delay: 3s; }
+.petal:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 5s; }
+.petal:nth-child(7) { left: 70%; animation-duration: 17s; animation-delay: 2.5s; }
+.petal:nth-child(8) { left: 80%; animation-duration: 15s; animation-delay: 4.5s; }
+.petal:nth-child(9) { left: 90%; animation-duration: 11s; animation-delay: 1.5s; }
+.petal:nth-child(10) { left: 15%; animation-duration: 14s; animation-delay: 3.5s; }
+.petal:nth-child(11) { left: 25%; animation-duration: 16s; animation-delay: 0.5s; }
+.petal:nth-child(12) { left: 35%; animation-duration: 13s; animation-delay: 2.2s; }
+.petal:nth-child(13) { left: 45%; animation-duration: 15s; animation-delay: 4.2s; }
+.petal:nth-child(14) { left: 55%; animation-duration: 12s; animation-delay: 1.2s; }
+.petal:nth-child(15) { left: 65%; animation-duration: 18s; animation-delay: 3.2s; }
+
+@keyframes falling {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Calculator Styles */
+.calculator {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(255, 133, 162, 0.3);
+    border: 1px solid rgba(255, 183, 197, 0.5);
+}
+
+.calculator-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calculator-header h1 {
+    color: #ff85a2;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(255, 133, 162, 0.3);
+}
+
+.display {
+    margin-bottom: 20px;
+}
+
+#display {
+    width: 100%;
+    height: 60px;
+    font-size: 28px;
+    text-align: right;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 238, 248, 0.8);
+    color: #333;
+    box-shadow: inset 0 2px 5px rgba(255, 133, 162, 0.2);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn {
+    padding: 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #ffeef8);
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(255, 133, 162, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 133, 162, 0.4);
+    background: linear-gradient(145deg, #ffeef8, #ffe0f0);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(255, 133, 162, 0.2);
+}
+
+.operator {
+    background: linear-gradient(145deg, #ffb7c5, #ff85a2);
+    color: white;
+}
+
+.operator:hover {
+    background: linear-gradient(145deg, #ff85a2, #ff6b8b);
+}
+
+.clear {
+    background: linear-gradient(145deg, #ff9999, #ff6666);
+    color: white;
+}
+
+.clear:hover {
+    background: linear-gradient(145deg, #ff6666, #ff4444);
+}
+
+.equals {
+    background: linear-gradient(145deg, #90ee90, #32cd32);
+    color: white;
+    grid-row: span 2;
+}
+
+.equals:hover {
+    background: linear-gradient(145deg, #32cd32, #228b22);
+}
+
+.zero {
+    grid-column: span 2;
+}
+
+@media (max-width: 480px) {
+    .calculator {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .btn {
+        padding: 15px;
+        font-size: 18px;
+    }
+    
+    .calculator-header h1 {
+        font-size: 20px;
+    }
+}
