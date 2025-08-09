@@ -43,45 +43,41 @@
             <button class="btn operator" onclick="appendToDisplay('/')">÷</button>
 
             <!-- Row 3 -->
-            <button class="btn" onclick="appendToDisplay('7')">7</button>
-            <button class="btn" onclick="appendToDisplay('8')">8</button>
-            <button class="btn" onclick="appendToDisplay('9')">9</button>
-            <button class="btn operator" onclick="appendToDisplay('-')">−</button>
-
-            <!-- Row 4 -->
             <button class="btn" onclick="appendToDisplay('4')">4</button>
             <button class="btn" onclick="appendToDisplay('5')">5</button>
             <button class="btn" onclick="appendToDisplay('6')">6</button>
-            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+            <button class="btn operator" onclick="appendToDisplay('*')">×</button>
 
-            <!-- Row 5 -->
+            <!-- Row 4 -->
             <button class="btn" onclick="appendToDisplay('1')">1</button>
             <button class="btn" onclick="appendToDisplay('2')">2</button>
             <button class="btn" onclick="appendToDisplay('3')">3</button>
-            <button class="btn equals" onclick="calculate()">=</button>
+            <button class="btn operator" onclick="appendToDisplay('-')">−</button>
 
-            <!-- Row 6 -->
+            <!-- Row 5 -->
             <button class="btn zero" onclick="appendToDisplay('0')">0</button>
             <button class="btn" onclick="appendToDisplay('.')">.</button>
+            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+            <button class="btn equals" onclick="calculate()">=</button>
 
-            <!-- Extra function row -->
-            <div class="extra-funcs">
-                <button class="btn func small" onclick="toggleSign()">±</button>
-                <button class="btn func small" onclick="percent()">%</button>
-                <button class="btn func small" onclick="sqrt()">√</button>
-                <button class="btn func small" onclick="square()">x²</button>
-                <button class="btn func small" onclick="reciprocal()">1/x</button>
-                <button class="btn func small" onclick="insertPi()">π</button>
-            </div>
-            <div class="scientific-funcs">
-                <button class="btn func small" onclick="appendToDisplay('(')">(</button>
-                <button class="btn func small" onclick="appendToDisplay(')')">)</button>
-                <button class="btn func small" onclick="sin()">sin</button>
-                <button class="btn func small" onclick="cos()">cos</button>
-                <button class="btn func small" onclick="tan()">tan</button>
-                <button class="btn func small" onclick="exp()">exp</button>
-                <button class="btn func small" onclick="clearHistory()">CLH</button>
-            </div>
+            <!-- Collapsible extra/scientific functions -->
+            <details style="grid-column: 1 / -1; margin-top: 8px;">
+                <summary style="cursor:pointer; font-size:14px; color:#ff85a2; font-family:'Cookie',cursive;">More Functions</summary>
+                <div class="extra-funcs">
+                    <button class="btn func small" onclick="sqrt()">√</button>
+                    <button class="btn func small" onclick="square()">x²</button>
+                    <button class="btn func small" onclick="reciprocal()">1/x</button>
+                    <button class="btn func small" onclick="insertPi()">π</button>
+                </div>
+                <div class="scientific-funcs">
+                    <button class="btn func small" onclick="appendToDisplay('(')">(</button>
+                    <button class="btn func small" onclick="appendToDisplay(')')">)</button>
+                    <button class="btn func small" onclick="sin()">sin</button>
+                    <button class="btn func small" onclick="cos()">cos</button>
+                    <button class="btn func small" onclick="tan()">tan</button>
+                    <button class="btn func small" onclick="exp()">exp</button>
+                </div>
+            </details>
         </div>
     </div>
 
