@@ -1,9 +1,7 @@
 /* ---------- Core calculator state ---------- */
 const display = document.getElementById('display');
-const historyList = document.getElementById('history-list');
 let currentInput = '0';
 let shouldResetDisplay = false;
-let history = [];
 const maxHistoryItems = 5;
 
 /* ---------- Utility ---------- */
@@ -119,10 +117,10 @@ function calculate() {
         
         if (!isFinite(result)) throw new Error('Invalid result');
         
-        // Add to history
-        addToHistory(currentInput + ' = ' + result);
-        
-        currentInput = parseFloat(result.toFixed(10)).toString();
+    currentInput = parseFloat(result.toFixed(10)).toString();
+
+    // Reset any memory-related visual states
+    display.style.background = '';
     } catch (error) {
         currentInput = 'Error';
         console.error('Calculation error:', error);
@@ -131,65 +129,7 @@ function calculate() {
     updateDisplay();
 }
 
-/* ---------- Memory ---------- */
-let memory = 0;
-let memoryHasValue = false;
-
-function memoryClear() { 
-    memory = 0;
-    memoryHasValue = false;
-    // Visual feedback that memory was cleared
-    display.style.opacity = '0.5';
-    setTimeout(() => display.style.opacity = '1', 200);
-}
-
-function memoryRecall() { 
-    if (!memoryHasValue) return;
-    // If we're in the middle of an expression, add multiplication operator
-    if (currentInput !== '0' && currentInput !== 'Error' && !isNaN(currentInput.slice(-1))) {
-        currentInput += '*';
-    }
-    if (currentInput === 'Error') currentInput = '0';
-    currentInput = currentInput === '0' ? memory.toString() : currentInput + memory.toString();
-    updateDisplay();
-    shouldResetDisplay = true;
-}
-
-function memoryAdd() { 
-    try {
-        // If current input is an expression, evaluate it first
-        if (currentInput.match(/[+\-*/()]/)) {
-            calculate();
-            if (currentInput === 'Error') return;
-        }
-        memory += parseFloat(currentInput) || 0;
-        memoryHasValue = true;
-        shouldResetDisplay = true;
-        // Visual feedback
-        display.style.opacity = '0.5';
-        setTimeout(() => display.style.opacity = '1', 200);
-    } catch (error) {
-        console.error('Memory add error:', error);
-    }
-}
-
-function memorySub() { 
-    try {
-        // If current input is an expression, evaluate it first
-        if (currentInput.match(/[+\-*/()]/)) {
-            calculate();
-            if (currentInput === 'Error') return;
-        }
-        memory -= parseFloat(currentInput) || 0;
-        memoryHasValue = true;
-        shouldResetDisplay = true;
-        // Visual feedback
-        display.style.opacity = '0.5';
-        setTimeout(() => display.style.opacity = '1', 200);
-    } catch (error) {
-        console.error('Memory subtract error:', error);
-    }
-}
+/* ---------- Extra functions ---------- */
 
 /* ---------- Extra functions ---------- */
 function toggleSign() {
@@ -262,24 +202,8 @@ function insertPi() {
 }
 
 /* ---------- History Management ---------- */
-function addToHistory(entry) {
-    history.unshift(entry);
-    if (history.length > maxHistoryItems) {
-        history.pop();
-    }
-    updateHistoryDisplay();
-}
 
-function updateHistoryDisplay() {
-    historyList.innerHTML = history
-        .map(entry => `<div class="history-item">${entry}</div>`)
-        .join('');
-}
 
-function clearHistory() {
-    history = [];
-    updateHistoryDisplay();
-}
 
 /* ---------- Scientific Functions ---------- */
 function sin() {

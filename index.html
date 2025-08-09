@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sakura Pro Calculator</title>
+    <title>Sakura Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,12 +20,9 @@
 
     <!-- Calculator -->
     <div class="calculator">
+
         <div class="calculator-header">
             <h1>🌸 Sakura Calculator 🌸</h1>
-        </div>
-
-        <div class="history-panel">
-            <div id="history-list"></div>
         </div>
 
         <div class="display">
@@ -34,16 +31,16 @@
 
         <div class="buttons">
             <!-- Row 1 -->
-            <button class="btn func" onclick="memoryClear()">MC</button>
-            <button class="btn func" onclick="memoryRecall()">MR</button>
-            <button class="btn func" onclick="memoryAdd()">M+</button>
-            <button class="btn func" onclick="memorySub()">M−</button>
-
-            <!-- Row 2 -->
+            <button class="btn special" onclick="toggleSign()">±</button>
+            <button class="btn special" onclick="percent()">%</button>
             <button class="btn clear" onclick="clearDisplay()">C</button>
             <button class="btn operator" onclick="deleteLast()">⌫</button>
+
+            <!-- Row 2 -->
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
             <button class="btn operator" onclick="appendToDisplay('/')">÷</button>
-            <button class="btn operator" onclick="appendToDisplay('*')">×</button>
 
             <!-- Row 3 -->
             <button class="btn" onclick="appendToDisplay('7')">7</button>
