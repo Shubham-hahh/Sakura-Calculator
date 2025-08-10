@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Dark-mode toggle -->
-    <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+    <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
 
-    <!-- Sakura petals -->
     <div class="sakura-container">
         <div class="petal"></div><div class="petal"></div><div class="petal"></div>
         <div class="petal"></div><div class="petal"></div><div class="petal"></div>
@@ -24,30 +22,35 @@
         <h1 class="title">Sakura Calculator</h1>
         <input id="display" readonly value="0">
 
+        <!-- Compact Deg/Rad toggle -->
+        <div class="angle-toggle">
+            <button id="angle-btn" onclick="toggleAngle()">Deg</button>
+        </div>
+
         <div class="grid">
-            <button class="fn-toggle" onclick="toggleFuncs()">Func</button>
             <button class="clear" onclick="clearDisplay()">C</button>
             <button class="operator" onclick="deleteLast()">⌫</button>
             <button class="operator" onclick="appendToDisplay('/')">÷</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
 
             <button onclick="appendToDisplay('7')">7</button>
             <button onclick="appendToDisplay('8')">8</button>
             <button onclick="appendToDisplay('9')">9</button>
-            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            <button class="operator" onclick="appendToDisplay('-')">−</button>
 
             <button onclick="appendToDisplay('4')">4</button>
             <button onclick="appendToDisplay('5')">5</button>
             <button onclick="appendToDisplay('6')">6</button>
-            <button class="operator" onclick="appendToDisplay('-')">−</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
 
             <button onclick="appendToDisplay('1')">1</button>
             <button onclick="appendToDisplay('2')">2</button>
             <button onclick="appendToDisplay('3')">3</button>
-            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="equals" onclick="calculate()">=</button>
 
             <button class="zero" onclick="appendToDisplay('0')">0</button>
             <button onclick="appendToDisplay('.')">.</button>
-            <button class="equals" onclick="calculate()">=</button>
+            <button onclick="toggleFuncs()">Func</button>
         </div>
 
         <div id="func-drawer" class="func-drawer hidden">
@@ -57,6 +60,12 @@
             <button onclick="square()">x²</button>
             <button onclick="reciprocal()">1/x</button>
             <button onclick="insertPi()">π</button>
+            <button onclick="sin()">sin</button>
+            <button onclick="cos()">cos</button>
+            <button onclick="tan()">tan</button>
+            <button onclick="asin()">asin</button>
+            <button onclick="acos()">acos</button>
+            <button onclick="atan()">atan</button>
         </div>
     </div>
 

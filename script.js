@@ -2,6 +2,7 @@
 const display = document.getElementById('display');
 let currentInput = '0';
 let shouldResetDisplay = false;
+let angleMode = 'deg';
 
 /* ---------- Utility ---------- */
 function updateDisplay() { display.value = currentInput; }
@@ -51,12 +52,65 @@ function calculate() {
     updateDisplay();
 }
 
-/* ---------- Extra functions ---------- */
+/* ---------- Angle ---------- */
+function toggleAngle() {
+    angleMode = angleMode === 'deg' ? 'rad' : 'deg';
+    document.getElementById('angle-btn').textContent = angleMode.toUpperCase();
+}
+function toRadians(v) { return angleMode === 'deg' ? v * Math.PI / 180 : v; }
+function toDegrees(r) { return angleMode === 'deg' ? r * 180 / Math.PI : r; }
+function round6(n) { return parseFloat(n.toFixed(6)).toString(); }
+
+/* ---------- Trigonometry ---------- */
+function sin() {
+    if (currentInput === 'Error') return;
+    currentInput = round6(Math.sin(toRadians(parseFloat(currentInput))));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+function cos() {
+    if (currentInput === 'Error') return;
+    currentInput = round6(Math.cos(toRadians(parseFloat(currentInput))));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+function tan() {
+    if (currentInput === 'Error') return;
+    const r = toRadians(parseFloat(currentInput));
+    if (Math.abs(Math.abs(r % Math.PI) - Math.PI / 2) < 1e-9) currentInput = 'Error';
+    else currentInput = round6(Math.tan(r));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+function asin() {
+    if (currentInput === 'Error') return;
+    const v = parseFloat(currentInput);
+    if (Math.abs(v) > 1) currentInput = 'Error';
+    else currentInput = round6(toDegrees(Math.asin(v)));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+function acos() {
+    if (currentInput === 'Error') return;
+    const v = parseFloat(currentInput);
+    if (Math.abs(v) > 1) currentInput = 'Error';
+    else currentInput = round6(toDegrees(Math.acos(v)));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+function atan() {
+    if (currentInput === 'Error') return;
+    currentInput = round6(toDegrees(Math.atan(parseFloat(currentInput))));
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+
+/* ---------- Other functions ---------- */
 function toggleSign()   { if (currentInput !== 'Error') currentInput = (parseFloat(currentInput) * -1).toString(); updateDisplay(); }
-function percent()      { if (currentInput !== 'Error') { currentInput = (parseFloat(currentInput) / 100).toString(); shouldResetDisplay = true; } updateDisplay(); }
-function sqrt()         { if (currentInput !== 'Error') { currentInput = (parseFloat(currentInput) < 0 ? 'Error' : Math.sqrt(parseFloat(currentInput)).toString()); shouldResetDisplay = true; } updateDisplay(); }
-function square()       { if (currentInput !== 'Error') { currentInput = (Math.pow(parseFloat(currentInput), 2).toString()); shouldResetDisplay = true; } updateDisplay(); }
-function reciprocal()   { if (currentInput !== 'Error') { const v = parseFloat(currentInput); currentInput = (v === 0 ? 'Error' : (1 / v).toString()); shouldResetDisplay = true; } updateDisplay(); }
+function percent()      { if (currentInput !== 'Error') { currentInput = round6(parseFloat(currentInput) / 100); shouldResetDisplay = true; } updateDisplay(); }
+function sqrt()         { if (currentInput !== 'Error') { currentInput = (parseFloat(currentInput) < 0 ? 'Error' : round6(Math.sqrt(parseFloat(currentInput)))); shouldResetDisplay = true; } updateDisplay(); }
+function square()       { if (currentInput !== 'Error') { currentInput = round6(Math.pow(parseFloat(currentInput), 2)); shouldResetDisplay = true; } updateDisplay(); }
+function reciprocal()   { if (currentInput !== 'Error') { const v = parseFloat(currentInput); currentInput = (v === 0 ? 'Error' : round6(1 / v)); shouldResetDisplay = true; } updateDisplay(); }
 function insertPi()     { currentInput = Math.PI.toFixed(10).replace(/0+$/, ''); shouldResetDisplay = true; updateDisplay(); }
 function toggleFuncs()  { document.getElementById('func-drawer').classList.toggle('hidden'); }
 
@@ -73,7 +127,7 @@ toggleBtn.addEventListener('click', () => {
     localStorage.setItem('theme', newTheme);
 });
 
-/* ---------- Keyboard ---------- */
+/* ---------- Keyboard shortcuts ---------- */
 document.addEventListener('keydown', e => {
     if (e.key >= '0' && e.key <= '9') appendToDisplay(e.key);
     else if (e.key === '.') appendToDisplay('.');
@@ -82,5 +136,5 @@ document.addEventListener('keydown', e => {
     else if (e.key === 'Backspace') deleteLast();
     else if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearDisplay();
     else if (e.key === '%') percent();
-    else if (e.key === 'p' || e.key === 'P') insertPi();
+    else if (e.key.toLowerCase() === 'p') insertPi();
 });
