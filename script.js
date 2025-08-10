@@ -200,11 +200,6 @@ function insertPi() {
     updateDisplay();
     shouldResetDisplay = true;
 }
-
-/* ---------- History Management ---------- */
-
-
-
 /* ---------- Scientific Functions ---------- */
 function sin() {
     if (currentInput !== 'Error') {

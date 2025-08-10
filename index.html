@@ -4,125 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sakura Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .equals {
-            grid-column: span 2;
-            width: 100%;
-            font-size: 20px;
-            padding: 14px 0;
-        }
-        .extra-funcs, .scientific-funcs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
-        }
-        .btn.func.small {
-            font-size: 16px;
-            padding: 8px 0;
-            min-width: 48px;
-            flex: 1 1 48px;
-            margin: 2px;
-        }
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #fdf4f9 0%, #ffe6f3 40%, #ffd6ee 80%, #ffcae8 100%);
-        }
-        .calculator {
-            margin: 0 auto;
-            box-shadow: 0 8px 24px rgba(255, 133, 162, .18);
-            max-width: 260px;
-            padding: 16px;
-        }
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        .btn {
-            min-width: 0;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 18px;
-            padding: 10px 0;
-        }
-        .calculator-header h1 {
-            font-size: 22px;
-        }
-        details[open] .extra-funcs, details[open] .scientific-funcs {
-            animation: fadeIn 0.3s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
-    <!-- Calculator -->
+
+    <!-- Falling sakura petals -->
+    <div class="sakura-container">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    </div>
+
     <div class="calculator">
+        <h1 class="title">Sakura Calculator</h1>
+        <input id="display" readonly value="0">
 
-        <div class="calculator-header">
-            <h1>🌸 Sakura Calculator 🌸</h1>
+        <div class="grid">
+            <button class="fn-toggle" onclick="toggleFuncs()">Func</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="deleteLast()">⌫</button>
+            <button class="operator" onclick="appendToDisplay('/')">÷</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('-')">−</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+            <button class="zero" onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="equals" onclick="calculate()">=</button>
         </div>
 
-        <div class="display">
-            <input type="text" id="display" readonly value="0">
-        </div>
-
-        <div class="buttons">
-            <!-- Row 1 -->
-            <button class="btn special" onclick="toggleSign()">±</button>
-            <button class="btn special" onclick="percent()">%</button>
-            <button class="btn clear" onclick="clearDisplay()">C</button>
-            <button class="btn operator" onclick="deleteLast()">⌫</button>
-
-            <!-- Row 2 -->
-            <button class="btn" onclick="appendToDisplay('7')">7</button>
-            <button class="btn" onclick="appendToDisplay('8')">8</button>
-            <button class="btn" onclick="appendToDisplay('9')">9</button>
-            <button class="btn operator" onclick="appendToDisplay('/')">÷</button>
-
-            <!-- Row 3 -->
-            <button class="btn" onclick="appendToDisplay('4')">4</button>
-            <button class="btn" onclick="appendToDisplay('5')">5</button>
-            <button class="btn" onclick="appendToDisplay('6')">6</button>
-            <button class="btn operator" onclick="appendToDisplay('*')">×</button>
-
-            <!-- Row 4 -->
-            <button class="btn" onclick="appendToDisplay('1')">1</button>
-            <button class="btn" onclick="appendToDisplay('2')">2</button>
-            <button class="btn" onclick="appendToDisplay('3')">3</button>
-            <button class="btn operator" onclick="appendToDisplay('-')">−</button>
-
-            <!-- Row 5 -->
-            <button class="btn zero" onclick="appendToDisplay('0')">0</button>
-            <button class="btn" onclick="appendToDisplay('.')">.</button>
-            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
-            <button class="btn equals" onclick="calculate()">=</button>
-
-            <!-- Collapsible extra/scientific functions -->
-            <details style="grid-column: 1 / -1; margin-top: 8px;">
-                <summary style="cursor:pointer; font-size:14px; color:#ff85a2; font-family:'Cookie',cursive;">More Functions</summary>
-                <div class="extra-funcs">
-                    <button class="btn func small" onclick="sqrt()">√</button>
-                    <button class="btn func small" onclick="square()">x²</button>
-                    <button class="btn func small" onclick="reciprocal()">1/x</button>
-                    <button class="btn func small" onclick="insertPi()">π</button>
-                </div>
-                <div class="scientific-funcs">
-                    <button class="btn func small" onclick="appendToDisplay('(')">(</button>
-                    <button class="btn func small" onclick="appendToDisplay(')')">)</button>
-                    <button class="btn func small" onclick="sin()">sin</button>
-                    <button class="btn func small" onclick="cos()">cos</button>
-                    <button class="btn func small" onclick="tan()">tan</button>
-                    <button class="btn func small" onclick="exp()">exp</button>
-                </div>
-            </details>
+        <!-- simplified function drawer (no memory) -->
+        <div id="func-drawer" class="func-drawer hidden">
+            <button onclick="toggleSign()">±</button>
+            <button onclick="percent()">%</button>
+            <button onclick="sqrt()">√</button>
+            <button onclick="square()">x²</button>
+            <button onclick="reciprocal()">1/x</button>
+            <button onclick="insertPi()">π</button>
         </div>
     </div>
 
