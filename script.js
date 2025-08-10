@@ -1,291 +1,86 @@
-/* ---------- Core calculator state ---------- */
+/* ---------- Core ---------- */
 const display = document.getElementById('display');
 let currentInput = '0';
 let shouldResetDisplay = false;
-const maxHistoryItems = 5;
 
 /* ---------- Utility ---------- */
-function updateDisplay() {
-    display.value = currentInput;
-}
-
+function updateDisplay() { display.value = currentInput; }
 function clearDisplay() {
     currentInput = '0';
     shouldResetDisplay = false;
     updateDisplay();
 }
-
 function deleteLast() {
-    if (currentInput.length > 1) {
-        currentInput = currentInput.slice(0, -1);
-    } else {
-        currentInput = '0';
-    }
+    currentInput = currentInput.length === 1 ? '0' : currentInput.slice(0, -1);
     updateDisplay();
 }
 
-/* ---------- Input handling ---------- */
+/* ---------- Input ---------- */
 function appendToDisplay(value) {
-    const ops = ['+', '-', '*', '/', '(', ')'];
-
-    // Handle Error state
-    if (currentInput === 'Error') {
-        currentInput = '0';
-    }
-
+    const ops = ['+', '-', '*', '/'];
     if (shouldResetDisplay) {
-        // keep result if next key is operator, else start fresh
-        if (ops.includes(value)) {
-            shouldResetDisplay = false;
-        } else {
-            currentInput = '0';
-            shouldResetDisplay = false;
-        }
+        currentInput = ops.includes(value) ? currentInput : '0';
+        shouldResetDisplay = false;
     }
-
-    const lastChar = currentInput.slice(-1);
-
-    // Handle decimal points
-    if (value === '.') {
-        // Find the last operator in the input
-        const lastOpIndex = Math.max(...ops.map(op => currentInput.lastIndexOf(op)));
-        // Check if there's already a decimal point after the last operator
-        const numberPart = currentInput.slice(lastOpIndex + 1);
-        if (numberPart.includes('.')) {
-            return;
-        }
-    }
-
-    // Handle operators
-    if (ops.includes(lastChar) && ops.includes(value)) {
-        // Special case: allow minus after other operators for negative numbers
-        if (value === '-' && lastChar !== '-' && lastChar !== ')') {
-            currentInput += value;
-        } else {
-            // prevent double operators
-            currentInput = currentInput.slice(0, -1) + value;
-        }
-        updateDisplay();
-        return;
-    }
-
-    // Handle parentheses
-    if (value === '(' && !isNaN(lastChar)) {
-        // Add multiplication operator before opening parenthesis
-        currentInput += '*' + value;
-    } else if (value === ')') {
-        // Check if we have matching parentheses
-        const openCount = (currentInput.match(/\(/g) || []).length;
-        const closeCount = (currentInput.match(/\)/g) || []).length;
-        if (closeCount >= openCount) {
-            return;
-        }
-        currentInput += value;
-    } else if (currentInput === '0' && !ops.includes(value)) {
+    const last = currentInput.slice(-1);
+    if (ops.includes(last) && ops.includes(value)) {
+        currentInput = currentInput.slice(0, -1) + value;
+    } else if (currentInput === '0' && value !== '.') {
         currentInput = value;
     } else {
         currentInput += value;
     }
-    
     updateDisplay();
 }
 
-/* ---------- Evaluation ---------- */
+/* ---------- Evaluate ---------- */
 function calculate() {
     try {
-        // If the input is already 'Error' or empty, don't proceed
-        if (currentInput === 'Error' || currentInput === '') {
-            return;
-        }
-
-        // prepare expression
         let expr = currentInput
             .replace(/×/g, '*')
             .replace(/÷/g, '/')
             .replace(/−/g, '-')
-            .replace(/[+\-*/]$/, '') // chop trailing operator
-            .replace(/\($/g, '') // remove trailing open parenthesis
-            .replace(/^\*+/, ''); // remove leading multiplication operators
-
-        // safe evaluation with support for Math functions
-        const mathContext = Object.getOwnPropertyNames(Math).reduce((ctx, key) => {
-            ctx[key] = Math[key];
-            return ctx;
-        }, {});
-        
-        const result = Function(...Object.keys(mathContext), '"use strict"; return (' + expr + ')')(...Object.values(mathContext));
-        
-        if (!isFinite(result)) throw new Error('Invalid result');
-        
-    currentInput = parseFloat(result.toFixed(10)).toString();
-
-    // Reset any memory-related visual states
-    display.style.background = '';
-    } catch (error) {
+            .replace(/[+\-*/]$/, '');
+        const res = Function('"use strict"; return (' + expr + ')')();
+        if (!isFinite(res)) throw new Error();
+        currentInput = parseFloat(res.toFixed(10)).toString();
+    } catch {
         currentInput = 'Error';
-        console.error('Calculation error:', error);
     }
     shouldResetDisplay = true;
     updateDisplay();
 }
 
 /* ---------- Extra functions ---------- */
+function toggleSign()   { if (currentInput !== 'Error') currentInput = (parseFloat(currentInput) * -1).toString(); updateDisplay(); }
+function percent()      { if (currentInput !== 'Error') { currentInput = (parseFloat(currentInput) / 100).toString(); shouldResetDisplay = true; } updateDisplay(); }
+function sqrt()         { if (currentInput !== 'Error') { currentInput = (parseFloat(currentInput) < 0 ? 'Error' : Math.sqrt(parseFloat(currentInput)).toString()); shouldResetDisplay = true; } updateDisplay(); }
+function square()       { if (currentInput !== 'Error') { currentInput = (Math.pow(parseFloat(currentInput), 2).toString()); shouldResetDisplay = true; } updateDisplay(); }
+function reciprocal()   { if (currentInput !== 'Error') { const v = parseFloat(currentInput); currentInput = (v === 0 ? 'Error' : (1 / v).toString()); shouldResetDisplay = true; } updateDisplay(); }
+function insertPi()     { currentInput = Math.PI.toFixed(10).replace(/0+$/, ''); shouldResetDisplay = true; updateDisplay(); }
+function toggleFuncs()  { document.getElementById('func-drawer').classList.toggle('hidden'); }
 
-/* ---------- Extra functions ---------- */
-function toggleSign() {
-    if (currentInput !== 'Error') {
-        try {
-            // If it's an expression, calculate it first
-            if (currentInput.match(/[+\-*/()]/)) {
-                calculate();
-                if (currentInput === 'Error') return;
-            }
-            currentInput = (parseFloat(currentInput) * -1).toString();
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch (error) {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
+/* ---------- Dark-mode toggle ---------- */
+const toggleBtn = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+toggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 
-function percent() {
-    if (currentInput !== 'Error') {
-        try {
-            // If it's an expression, calculate it first
-            if (currentInput.match(/[+\-*/()]/)) {
-                calculate();
-                if (currentInput === 'Error') return;
-            }
-            const value = parseFloat(currentInput);
-            if (isNaN(value)) {
-                throw new Error('Invalid input for percentage');
-            }
-            currentInput = (value / 100).toString();
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch (error) {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
-function sqrt() {
-    if (currentInput !== 'Error') {
-        const v = parseFloat(currentInput);
-        currentInput = v < 0 ? 'Error' : Math.sqrt(v).toString();
-        updateDisplay();
-        shouldResetDisplay = true;
-    }
-}
-function square() {
-    if (currentInput !== 'Error') {
-        const v = parseFloat(currentInput);
-        currentInput = (v * v).toString();
-        updateDisplay();
-        shouldResetDisplay = true;
-    }
-}
-function reciprocal() {
-    if (currentInput !== 'Error') {
-        const v = parseFloat(currentInput);
-        currentInput = v === 0 ? 'Error' : (1 / v).toString();
-        updateDisplay();
-        shouldResetDisplay = true;
-    }
-}
-function insertPi() {
-    currentInput = Math.PI.toFixed(10).replace(/0+$/, '');
-    updateDisplay();
-    shouldResetDisplay = true;
-}
-/* ---------- Scientific Functions ---------- */
-function sin() {
-    if (currentInput !== 'Error') {
-        try {
-            // First calculate any pending expression
-            if (currentInput.match(/[+\-*/()]/)) {
-                calculate();
-                if (currentInput === 'Error') return;
-            }
-            const v = parseFloat(currentInput);
-            currentInput = Math.sin(v).toFixed(10).replace(/\.?0+$/, '');
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
+toggleBtn.addEventListener('click', () => {
+    const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', newTheme);
+});
 
-function cos() {
-    if (currentInput !== 'Error') {
-        try {
-            const v = parseFloat(currentInput);
-            currentInput = Math.cos(v).toFixed(10).replace(/\.?0+$/, '');
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
-
-function tan() {
-    if (currentInput !== 'Error') {
-        try {
-            const v = parseFloat(currentInput);
-            currentInput = Math.tan(v).toFixed(10).replace(/\.?0+$/, '');
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
-
-function exp() {
-    if (currentInput !== 'Error') {
-        try {
-            const v = parseFloat(currentInput);
-            currentInput = Math.exp(v).toFixed(10).replace(/\.?0+$/, '');
-            updateDisplay();
-            shouldResetDisplay = true;
-        } catch {
-            currentInput = 'Error';
-            updateDisplay();
-        }
-    }
-}
-
-/* ---------- Keyboard shortcuts ---------- */
+/* ---------- Keyboard ---------- */
 document.addEventListener('keydown', e => {
-    // Prevent default browser shortcuts
-    if ((e.ctrlKey || e.metaKey) && ['p', 'o', 's'].includes(e.key.toLowerCase())) {
-        e.preventDefault();
-    }
-
     if (e.key >= '0' && e.key <= '9') appendToDisplay(e.key);
     else if (e.key === '.') appendToDisplay('.');
-    else if (['+', '-', '*', '/', '(', ')'].includes(e.key)) {
-        e.preventDefault(); // Prevent browser shortcuts
-        appendToDisplay(e.key);
-    }
-    else if (e.key === 'Enter' || e.key === '=') {
-        e.preventDefault();
-        calculate();
-    }
+    else if (['+', '-', '*', '/'].includes(e.key)) appendToDisplay(e.key);
+    else if (e.key === 'Enter' || e.key === '=') calculate();
     else if (e.key === 'Backspace') deleteLast();
     else if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearDisplay();
     else if (e.key === '%') percent();
     else if (e.key === 'p' || e.key === 'P') insertPi();
-    else if (e.key.toLowerCase() === 's') sin();
-    else if (e.key.toLowerCase() === 'o') cos();
-    else if (e.key.toLowerCase() === 't') tan();
-    else if (e.key.toLowerCase() === 'e') exp();
-    else if (e.key.toLowerCase() === 'h') clearHistory();
 });

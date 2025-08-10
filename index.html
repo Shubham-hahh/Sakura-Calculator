@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Sakura Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Dark-mode toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
 
-    <!-- Falling sakura petals -->
+    <!-- Sakura petals -->
     <div class="sakura-container">
         <div class="petal"></div><div class="petal"></div><div class="petal"></div>
         <div class="petal"></div><div class="petal"></div><div class="petal"></div>
@@ -48,7 +50,6 @@
             <button class="equals" onclick="calculate()">=</button>
         </div>
 
-        <!-- simplified function drawer (no memory) -->
         <div id="func-drawer" class="func-drawer hidden">
             <button onclick="toggleSign()">±</button>
             <button onclick="percent()">%</button>
