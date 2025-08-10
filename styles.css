@@ -42,8 +42,6 @@ body {
 }
 .sakura-container { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
 .petal { position: absolute; width: 12px; height: 12px; border-radius: 150% 0 150% 0; background: var(--petal); animation: falling 15s linear infinite; }
-.petal:nth-child(1){left:5%; top:-20px; animation-duration:13s; animation-delay:0s;}
-/* ... (petals 2-15 identical to above) ... */
 @keyframes falling {
     0%{transform:translateY(-20px) rotate(0deg); opacity:.9;}
     100%{transform:translateY(calc(100vh + 50px)) rotate(360deg); opacity:0;}
@@ -58,29 +56,20 @@ body {
     box-shadow: 0 8px 25px var(--shadow);
     transition: background .3s;
 }
-.title {
-    font-size: 32px;
-    color: var(--text);
-    text-align: center;
-    margin-bottom: 10px;
-}
-.angle-toggle {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
-}
+.title { font-size: 32px; color: var(--text); text-align: center; margin-bottom: 10px; }
+.angle-toggle { display: flex; justify-content: center; margin-bottom: 8px; }
 #angle-btn {
-    padding: 4px 10px;
-    font-size: 16px;
+    padding: 2px 6px;
+    font-size: 12px;
     border: none;
-    border-radius: 15px;
+    border-radius: 10px;
     background: var(--btn-op);
     color: #fff;
     cursor: pointer;
-    transform: scale(.75); /* 75 % size */
+    transform: scale(.5);  /* 50 % size */
     transition: background .3s;
 }
-#angle-btn:active { transform: scale(.7); }
+#angle-btn:active { transform: scale(.45); }
 [data-theme="dark"] #angle-btn { background: var(--btn-eq); }
 #display {
     font-family: 'Cookie', cursive;

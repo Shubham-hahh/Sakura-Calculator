@@ -65,44 +65,38 @@ function round6(n) { return parseFloat(n.toFixed(6)).toString(); }
 function sin() {
     if (currentInput === 'Error') return;
     currentInput = round6(Math.sin(toRadians(parseFloat(currentInput))));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 function cos() {
     if (currentInput === 'Error') return;
     currentInput = round6(Math.cos(toRadians(parseFloat(currentInput))));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 function tan() {
     if (currentInput === 'Error') return;
     const r = toRadians(parseFloat(currentInput));
     if (Math.abs(Math.abs(r % Math.PI) - Math.PI / 2) < 1e-9) currentInput = 'Error';
     else currentInput = round6(Math.tan(r));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 function asin() {
     if (currentInput === 'Error') return;
     const v = parseFloat(currentInput);
     if (Math.abs(v) > 1) currentInput = 'Error';
     else currentInput = round6(toDegrees(Math.asin(v)));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 function acos() {
     if (currentInput === 'Error') return;
     const v = parseFloat(currentInput);
     if (Math.abs(v) > 1) currentInput = 'Error';
     else currentInput = round6(toDegrees(Math.acos(v)));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 function atan() {
     if (currentInput === 'Error') return;
     currentInput = round6(toDegrees(Math.atan(parseFloat(currentInput))));
-    shouldResetDisplay = true;
-    updateDisplay();
+    shouldResetDisplay = true; updateDisplay();
 }
 
 /* ---------- Other functions ---------- */
@@ -119,7 +113,6 @@ const toggleBtn = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 toggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-
 toggleBtn.addEventListener('click', () => {
     const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
