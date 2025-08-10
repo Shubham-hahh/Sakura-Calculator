@@ -20,12 +20,7 @@
 
     <div class="calculator">
         <h1 class="title">Sakura Calculator</h1>
-        <input id="display" readonly value="0">
-
-        <!-- ultra-small angle toggle -->
-        <div class="angle-toggle">
-            <button id="angle-btn" onclick="toggleAngle()">Deg</button>
-        </div>
+        <input id="display" readonly value="0" class="display-input">
 
         <div class="grid">
             <button class="clear" onclick="clearDisplay()">C</button>
@@ -42,6 +37,7 @@
             <button onclick="appendToDisplay('5')">5</button>
             <button onclick="appendToDisplay('6')">6</button>
             <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="operator percent" onclick="percent()">%</button> <!-- Percentage button below plus button -->
 
             <button onclick="appendToDisplay('1')">1</button>
             <button onclick="appendToDisplay('2')">2</button>
@@ -50,12 +46,12 @@
 
             <button class="zero" onclick="appendToDisplay('0')">0</button>
             <button onclick="appendToDisplay('.')">.</button>
-            <button onclick="toggleFuncs()">Func</button>
+            <button class="func" onclick="toggleFuncs()">Func</button>
+            <button id="angle-btn" onclick="toggleAngle()">Deg</button>
         </div>
 
         <div id="func-drawer" class="func-drawer hidden">
             <button onclick="toggleSign()">±</button>
-            <button onclick="percent()">%</button>
             <button onclick="sqrt()">√</button>
             <button onclick="square()">x²</button>
             <button onclick="reciprocal()">1/x</button>

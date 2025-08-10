@@ -62,42 +62,25 @@ function toDegrees(r) { return angleMode === 'deg' ? r * 180 / Math.PI : r; }
 function round6(n) { return parseFloat(n.toFixed(6)).toString(); }
 
 /* ---------- Trigonometry ---------- */
-function sin() {
+function trig(fn, isInverse = false) {
     if (currentInput === 'Error') return;
-    currentInput = round6(Math.sin(toRadians(parseFloat(currentInput))));
-    shouldResetDisplay = true; updateDisplay();
+    let val = parseFloat(currentInput);
+    let res = isInverse ? fn(val) : fn(toRadians(val));
+    if (isInverse) res = toDegrees(res);
+    if (fn === Math.tan && !isInverse && Math.abs(Math.abs(res % Math.PI) - Math.PI / 2) < 1e-9) {
+        currentInput = 'Error';
+    } else {
+        currentInput = round6(res);
+    }
+    shouldResetDisplay = true;
+    updateDisplay();
 }
-function cos() {
-    if (currentInput === 'Error') return;
-    currentInput = round6(Math.cos(toRadians(parseFloat(currentInput))));
-    shouldResetDisplay = true; updateDisplay();
-}
-function tan() {
-    if (currentInput === 'Error') return;
-    const r = toRadians(parseFloat(currentInput));
-    if (Math.abs(Math.abs(r % Math.PI) - Math.PI / 2) < 1e-9) currentInput = 'Error';
-    else currentInput = round6(Math.tan(r));
-    shouldResetDisplay = true; updateDisplay();
-}
-function asin() {
-    if (currentInput === 'Error') return;
-    const v = parseFloat(currentInput);
-    if (Math.abs(v) > 1) currentInput = 'Error';
-    else currentInput = round6(toDegrees(Math.asin(v)));
-    shouldResetDisplay = true; updateDisplay();
-}
-function acos() {
-    if (currentInput === 'Error') return;
-    const v = parseFloat(currentInput);
-    if (Math.abs(v) > 1) currentInput = 'Error';
-    else currentInput = round6(toDegrees(Math.acos(v)));
-    shouldResetDisplay = true; updateDisplay();
-}
-function atan() {
-    if (currentInput === 'Error') return;
-    currentInput = round6(toDegrees(Math.atan(parseFloat(currentInput))));
-    shouldResetDisplay = true; updateDisplay();
-}
+function sin() { trig(Math.sin); }
+function cos() { trig(Math.cos); }
+function tan() { trig(Math.tan); }
+function asin() { trig(Math.asin, true); }
+function acos() { trig(Math.acos, true); }
+function atan() { trig(Math.atan, true); }
 
 /* ---------- Other functions ---------- */
 function toggleSign()   { if (currentInput !== 'Error') currentInput = (parseFloat(currentInput) * -1).toString(); updateDisplay(); }
